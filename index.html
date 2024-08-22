@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+  </head>
+  <body>
+    <main>
+      <ui-card>
+        <template shadowrootmode="open">
+          <style>
+            :host {
+              display: block;
+              contain: content;
+              box-sizing: border-box;
+              box-shadow: var(--shadow-raised);
+              border: var(--stroke-thicknessMinus1) var(--stroke-style)
+                var(--color-layerBorder);
+              border-radius: var(--border-radius);
+              background: var(--background, transparent);
+              color: var(--foreground, var(--color-onLayerBase));
+            }
+          </style>
+          <slot></slot>
+        </template>
+        ui-card
+      </ui-card>
+      <ui-card-1>ui-card-1</ui-card-1>
+      <ui-card-2>ui-card-2</ui-card-2>
+      <ui-card-3>ui-card-3</ui-card-3>
+    </main>
+    <script>
+      const render = (tagname = null, attributes = {}, ...children) => {
+        children = children.join("");
+        return tagname === null
+          ? children
+          : `<${tagname} ${Object.entries(attributes)
+              .map(([key, value]) => `${key}="${value}"`)
+              .join(" ")}>
+          ${children}
+        </${tagname}>`;
+      };
+      const renderFragment = (...elements) => elements.join("");
+      const Define = (
+        tagname = "ui-card",
+        body,
+        { shadowRootMode = "open" } = {}
+      ) => {
+        const range = document.createRange();
+        const fragment = range.createContextualFragment(body);
+        customElements.define(
+          tagname,
+          class extends HTMLElement {
+            constructor() {
+              super();
+              this.attachShadow({ mode: shadowRootMode });
+              this.shadowRoot.appendChild(fragment);
+              // this.shadowRoot.appendChild(fragment.content.cloneNode(true));
+            }
+          }
+        );
+      };
+      const DefineTag = (tagname, options) => {
+        return (strings, ...substitutions) => {
+          const body = strings.reduce((acc, string, i) => {
+            return acc + string + (substitutions[i] || "");
+          }, "");
+          Define(tagname, body, options);
+        };
+      };
+      Define(
+        "ui-card-1",
+        `<style>
+          :host {
+            display: block;
+            contain: content;
+            box-sizing: border-box;
+            box-shadow: var(--shadow-raised);
+            border: var(--stroke-thicknessMinus1) var(--stroke-style)
+              var(--color-layerBorder);
+            border-radius: var(--border-radius);
+            background: var(--background, transparent);
+            color: var(--foreground, var(--color-onLayerBase));
+          }
+        </style>
+        <slot></slot>`
+      );
+      Define(
+        "ui-card-2",
+        render(
+          null,
+          null,
+          render(
+            "style",
+            {},
+            `
+          :host {
+            display: block;
+            contain: content;
+            box-sizing: border-box;
+            box-shadow: var(--shadow-raised);
+            border: var(--stroke-thicknessMinus1) var(--stroke-style)
+              var(--color-layerBorder);
+            border-radius: var(--border-radius);
+            background: var(--background, transparent);
+            color: var(--foreground, var(--color-onLayerBase));
+          }`
+          ),
+          render("slot", {})
+        )
+      );
+      DefineTag("ui-card-3")`<style>
+          :host {
+            display: block;
+            contain: content;
+            box-sizing: border-box;
+            box-shadow: var(--shadow-raised);
+            border: var(--stroke-thicknessMinus1) var(--stroke-style)
+              var(--color-layerBorder);
+            border-radius: var(--border-radius);
+            background: var(--background, transparent);
+            color: var(--foreground, var(--color-onLayerBase));
+          }
+        </style>
+        <slot></slot>`;
+    </script>
+  </body>
+</html>
