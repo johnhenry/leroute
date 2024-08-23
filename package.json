@@ -1,0 +1,17 @@
+{
+  "name": "phrouter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.mjs",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node --test test/index.mjs",
+    "demo:server": "node demo/server.mjs",
+    "demo:client": "node demo/client.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

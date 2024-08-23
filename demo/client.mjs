@@ -1,6 +1,6 @@
 // Import the necessary functions
-import { tagRequest } from "./req.mjs";
-import { tagResponse } from "./res.mjs";
+import { tagRequest } from "../create-request.mjs";
+import { createResponse } from "../index.mjs";
 // Utility function to create a simple readable stream
 const createReadableStream = (data) => {
   return new ReadableStream({
@@ -80,7 +80,7 @@ ${formData}
 // Demo 5: Basic HTML response
 async function demoBasicHtmlResponse() {
   console.log("Demo 5: Basic HTML response");
-  const response = await tagResponse()`HTTP/1.1 200 OK
+  const response = await createResponse`HTTP/1.1 200 OK
 Content-Type: text/html
 
 <html><body>Hello, World!</body></html>
@@ -95,7 +95,7 @@ Content-Type: text/html
 async function demoJsonResponse() {
   console.log("Demo 6: JSON response");
   const jsonBody = JSON.stringify({ message: "Success", code: 200 });
-  const response = await tagResponse()`HTTP/1.1 200 OK
+  const response = await createResponse`HTTP/1.1 200 OK
 Content-Type: application/json
 
 ${jsonBody}
@@ -109,7 +109,7 @@ ${jsonBody}
 // Demo 7: Response with custom status code
 async function demoCustomStatusResponse() {
   console.log("Demo 7: Response with custom status code");
-  const response = await tagResponse()`HTTP/1.1 404 Not Found
+  const response = await createResponse`HTTP/1.1 404 Not Found
 Content-Type: text/plain
 
 Resource not found
@@ -126,7 +126,7 @@ async function demoReadableStreamResponse() {
   console.log("Demo 8: Response with ReadableStream body");
   const streamData = "This is streaming response data";
   const stream = createReadableStream(streamData);
-  const response = await tagResponse()`HTTP/1.1 200 OK
+  const response = await createResponse`HTTP/1.1 200 OK
 Content-Type: application/octet-stream
 
 ${stream}

@@ -3,7 +3,7 @@ import assert from "node:assert";
 import HTTPExpression, {
   InlineParameter,
   HeaderMatch,
-} from "../http-expression.mjs";
+} from "../utility/http-expression.mjs";
 
 // Comprehensive tests
 test("HTTPExpression - Comprehensive Tests", async (t) => {

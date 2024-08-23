@@ -1,6 +1,32 @@
-import serve from "./node-serve.mjs";
-import { createPhroute } from "./create-phroute.mjs";
-import { createPhrouter } from "./create-phrouter.mjs";
+import serve from "../utility/node-serve.mjs";
+import { createPhroute } from "../create-phroute.mjs";
+import { createPhrouter } from "../create-phrouter.mjs";
+
+const echoRoute = async (request) => {
+  const { method, url, headers } = request;
+  const body = await request.text();
+  console.log(`${method} ${url}`);
+  console.log([...headers]);
+  console.log(body);
+  return new Response(body, {
+    status: 200,
+    headers: {
+      "content-type": headers.get("content-type") || "text/plain",
+    },
+  });
+};
+serve({ port: 8078 }, echoRoute);
+
+const echoPhroute = createPhroute({ streaming: true })`HTTP/1.1 200 OK
+Content-Type: ${(request) =>
+  request.headers.get("content-type") || "text/plain"}
+
+${async (request) => {
+  const body = await request.text();
+  console.log(body);
+  return body;
+}}`;
+serve({ port: 8079 }, echoPhroute);
 
 // Server with single html "phroute"
 const htmlRoute = createPhroute({ streaming: true })`<!DOCTYPE html>

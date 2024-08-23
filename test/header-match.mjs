@@ -1,6 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert";
-import { TaggedHeaderExpression, HeaderMatch } from "../header-match.mjs";
+import {
+  TaggedHeaderExpression,
+  HeaderMatch,
+} from "../utility/header-match.mjs";
 
 test("TaggedHeaderExpression - basic functionality", async (t) => {
   const expr = TaggedHeaderExpression`[Content-Type] [!Cache-Control]`;

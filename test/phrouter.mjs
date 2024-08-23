@@ -2,7 +2,7 @@ import { createPhrouter } from "../create-phrouter.mjs";
 import HTTPExpression, {
   InlineParameter,
   HeaderMatch,
-} from "../http-expression.mjs";
+} from "../utility/http-expression.mjs";
 
 import { describe, it, test } from "node:test";
 import assert from "node:assert";

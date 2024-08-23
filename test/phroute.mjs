@@ -1,5 +1,5 @@
 // import { createPhroute } from "../create-phroute.mjs";
-import { createResponse as createPhroute } from "../create-response.mjs";
+import { createPhroute } from "../create-phroute.mjs";
 
 import { describe, it } from "node:test";
 import assert from "node:assert";
@@ -48,8 +48,8 @@ describe("createPhroute", () => {
 
   it("should handle streaming responses", async () => {
     const route = createPhroute({ streaming: true })`
-      ${async (_, { setHeader }) => {
-        setHeader("X-Streaming", "True");
+      ${async (_, { response }) => {
+        response.headers.set("X-Streaming", "True");
         await new Promise((resolve) => setTimeout(resolve, 10));
         return "Part 1";
       }}
@@ -60,7 +60,7 @@ describe("createPhroute", () => {
     `;
     const response = await route(new Request("https://example.com"));
     assert.strictEqual(response.headers.get("X-Streaming"), "True");
-    assert.strictEqual(response.headers.get("Content-Length"), null);
+    assert.strictEqual(response.headers.get("Content-Length"), "13");
 
     const reader = response.body.getReader();
     let result = "";

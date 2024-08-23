@@ -1,4 +1,4 @@
-export const tagRequest = (options = {}) => {
+export const createRequest = (options = {}) => {
   return async function (strings, ...values) {
     let fullString = "";
     let bodyValue = null;
@@ -105,4 +105,4 @@ export const tagRequest = (options = {}) => {
   };
 };
 
-export default tagRequest;
+export default createRequest;

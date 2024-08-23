@@ -1,92 +1,142 @@
-```javascript
-const oneshot = await fetch(
-  req()`GET http://www.google.com/hello.htm HTTP/1.1`
-);
-const google = req({ baseUrl: "https://google.com" });
-const recycled0 = await fetch(google`GET /hello.htm HTTP/1.1
-User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)
-Host: www.tutorialspoint.com
-Accept-Language: en-us
-Accept-Encoding: gzip, deflate
-Connection: Keep-Alive)`);
-const recycled0 = await fetch(googleRequest`POST /hello.htm HTTP/1.1
-User-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)
-Host: www.tutorialspoint.com
-Accept-Language: en-us
-Accept-Encoding: gzip, deflate
-Connection: Keep-Alive)`);
+# Phrouter
+
+Phrouter is a flexible and powerful routing library for handling HTTP requests and responses in JavaScript. It provides an intuitive API for creating routes, handling requests, and generating responses.
+
+## Features
+
+- Create simple and complex routes with ease
+- Support for route parameters and query strings
+- Flexible response generation using template literals
+- Middleware support for request and response processing
+- Built-in support for streaming responses
+- TypeScript definitions included
+
+## Installation
+
+```bash
+npm install phrouter
 ```
 
+## Usage
+
+### Basic Usage
+
 ```javascript
-const oneshot = (request) =>
-  res()`HTTP/1.1 200 OK
+import { createPhrouter, createPhroute } from 'phrouter';
 
-OK!`;
-const error = res()`HTTP/1.1 404 Not Found
-Date: Sun, 18 Oct 2012 10:36:20 GMT
-Server: Apache/2.2.14 (Win32)
+// Create a router
+const router = createPhrouter();
 
-URL not found`;
-
-const liveError = res.live()`
-HTTP/1.1 404 Not Found
-Date: Sun, 18 Oct 2012 10:36:20 GMT
-
-${(request) => request.url} not found.`;
-
-let phrouter;
-
-phrouter.endpoint`GET /hello.htm`((request) => error.clone());
-phrouter.endpoint`GET /hello.htm`(liveError);
-phrouter.endpoint`GET /hello.htm``
-HTTP/1.1 404 Not Found
-Date: Sun, 18 Oct 2012 10:36:20 GMT
-
-${(request) => request.url} not found.`;
-
-phrouter.endpoint`GET /:id [content-type:application/json]``
-HTTP/1.1 404 Not Found
-Date: Sun, 18 Oct 2012 10:36:20 GMT
-
+// Define a simple route
+router.endpoint`GET /`(createPhroute()`
 <!DOCTYPE html>
 <html>
   <head>
-    <title>404 Not Found</title>
+    <title>Welcome</title>
   </head>
   <body>
-    <h1>Not Found</h1>
-    <p>The requested URL ${(request) =>
-      request.url} was not found on this server.</p>
+    <h1>Welcome to Phrouter!</h1>
+    <p>The current time is: ${() => new Date().toISOString()}</p>
   </body>
 </html>
-`;
+`);
 
-const id = ParameterMatch({
-  name: "id",
-  match: /^[0-9]+$/,
-  default: 0,
-  type: "number",
-});
-
-phrouter.endpoint`GET /${id} [content-type:application/json]``
-HTTP/1.1 404 Not Found
-Date: Sun, 18 Oct 2012 10:36:20 GMT
-
+// Define a route with parameters
+router.endpoint`GET /user/:id`(createPhroute()`
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>404 Not Found</title>
-  </head>8i4
   <body>
-    <h1>Not Found</h1>
-    <p>The requested URL ${(request) =>
-      request.url} was not found on this server.</p>
+    <h1>User Profile</h1>
+    <p>User ID: ${(_, { params }) => params.id}</p>
   </body>
 </html>
-`;
+`);
 
-// the presence of "HTTTP/*" or "<" as the first non-white-space character
-// dictates whether or not we are in "head" mode or "HTML" mode.
-// In raw mode we write all heaers
-// In HTML mode, everything is defaulted (content-type: text/html, etc)
+// Use the router
+import { serve } from 'phrouter';
+serve({ port: 8080 }, router);
 ```
+
+### Advanced Usage
+
+```javascript
+import { createPhrouter, createPhroute } from 'phrouter';
+
+const router = createPhrouter();
+
+// JSON response
+router.endpoint`GET /api/data`(async (request) => {
+  const data = { message: "Hello, World!", timestamp: new Date().toISOString() };
+  return new Response(JSON.stringify(data), {
+    headers: { 'Content-Type': 'application/json' }
+  });
+});
+
+// Route with header matching
+router.endpoint`GET /protected [Authorization: Bearer *]`(createPhroute()`
+HTTP/1.1 200 OK
+Content-Type: text/plain
+
+This is a protected resource
+`);
+
+// Custom error handling
+router.endpoint`GET /error`(() => {
+  throw new Error("Intentional error");
+});
+
+const errorHandler = (error, request) => {
+  console.error("Error:", error);
+  return new Response("An error occurred", { status: 500 });
+};
+
+serve({ port: 8080 }, router, { errorHandler });
+```
+
+## API Reference
+
+### `createPhrouter(options?: PhrouterInit): Phrouter`
+
+Creates a new router instance.
+
+### `createPhroute(options?: PhrouteInit): Phroute`
+
+Creates a new route handler.
+
+### `serve(options: { port: number }, handler: Phroute | Phrouter, serverOptions?: object): void`
+
+Starts a server with the given handler.
+
+## Types
+
+The library includes TypeScript definitions. Here are some key types:
+
+```typescript
+type Phroute = (request: Request) => Response | Promise<Response>;
+
+type Phrouter = Phroute & {
+  endpoint: (template: TemplateStringsArray | Phroute) => void;
+};
+
+type PhrouteInit = {
+  headers?: HeadersInit | Headers;
+  status?: number;
+  statusText?: string;
+  streaming?: boolean;
+};
+
+type PhrouterInit = {
+  baseUrl: string;
+  defaultHandler: Phroute;
+  errorHandler: (error: Error, request: Request) => Response | Promise<Response>;
+  cache: CacheOptions;
+};
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the ISC License.

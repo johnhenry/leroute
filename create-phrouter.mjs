@@ -1,5 +1,5 @@
 import { createPhroute } from "./create-phroute.mjs";
-import { HTTPExpression } from "./http-expression.mjs";
+import { HTTPExpression } from "./utility/http-expression.mjs";
 /** @type {CreateRouter} */
 export const createPhrouter = (initial = {}) => {
   const routes = [];

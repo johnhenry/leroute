@@ -1,6 +1,7 @@
 import http from "http";
 import https from "https";
 import { Readable } from "stream";
+
 function serve(handlerOrOptions, maybeHandler) {
   let options = {};
   let handler;
@@ -17,11 +18,17 @@ function serve(handlerOrOptions, maybeHandler) {
   server.on("request", async (req, res) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
 
-    const request = new Request(url.toString(), {
+    const requestInit = {
       method: req.method,
       headers: req.headers,
-      body: req.method !== "GET" && req.method !== "HEAD" ? req : null,
-    });
+    };
+
+    if (req.method !== "GET" && req.method !== "HEAD") {
+      requestInit.body = req;
+      requestInit.duplex = "half"; // Add this line
+    }
+
+    const request = new Request(url.toString(), requestInit);
 
     try {
       const response = await handler(request);
