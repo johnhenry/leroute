@@ -3,75 +3,85 @@
 [![npm version](https://badge.fury.io/js/loute.svg)](https://badge.fury.io/js/loute)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-<img alt="" width="512" height="512" src="./logo.jpeg" style="width:512px;height:512px"/>
+<img alt="Loute Logo" width="512" height="512" src="./logo.jpeg" style="width:512px;height:512px"/>
 
-Loute is a flexible and powerful routing library for handling HTTP requests and responses in JavaScript.
+Loute is a flexible and powerful routing library for handling HTTP requests and responses in JavaScript and TypeScript applications.
 
-It uses tagged-template-strings to provides an intuitive API for creating routes, handling requests, and generating requests and responses.
+## 🚀 Features
 
-## Features
-
-- Create simple and complex routes with ease
-- Support for route parameters and query strings
+- Intuitive API using tagged template strings for route creation
+- Support for simple and complex routing patterns
 - Flexible response generation using template literals
 - Middleware support for request and response processing
-- Built-in support for streaming responses
-- TypeScript definitions included
+- Streaming response capabilities
+- Full TypeScript support with included type definitions
 
-## Installation
+## 📦 Installation
 
 ```bash
 npm install loute
 ```
 
-## Usage
+Or using yarn:
 
-### Basic Usage
+```bash
+yarn add loute
+```
+
+## 🛠 Usage
+
+### Basic Example
 
 ```javascript
-import { createLouteRouter, createLouteRoute } from "loute";
+import { createLouteRouter, createLouteRoute, serve } from "loute";
 
 // Create a router
 const router = createLouteRouter();
 
 // Define a simple route
-router.endpoint`GET /`(createLouteRoute()`
+router.endpoint`GET /``
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Welcome</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Loute</title>
   </head>
   <body>
     <h1>Welcome to Loute!</h1>
     <p>The current time is: ${() => new Date().toISOString()}</p>
   </body>
 </html>
-`);
+`;
 
 // Define a route with parameters
-router.endpoint`GET /user/:id`(createLouteRoute()`
+router.endpoint`GET /user/:id``
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+  </head>
   <body>
     <h1>User Profile</h1>
     <p>User ID: ${(_, { params }) => params.id}</p>
   </body>
 </html>
-`);
+`;
 
-// Use the router
-import { serve } from "loute";
+// Start the server
 serve({ port: 8080 }, router);
 ```
 
 ### Advanced Usage
 
 ```javascript
-import { createLouteRouter, createLouteRoute } from "loute";
+import { createLouteRouter, createLouteRoute, serve } from "loute";
 
 const router = createLouteRouter();
 
-// JSON response
+// JSON API endpoint
 router.endpoint`GET /api/data`(async (request) => {
   const data = {
     message: "Hello, World!",
@@ -82,13 +92,13 @@ router.endpoint`GET /api/data`(async (request) => {
   });
 });
 
-// Route with header matching
-router.endpoint`GET /protected [Authorization: Bearer *]`(createLouteRoute()`
+// Protected route with header matching
+router.endpoint`GET /protected [Authorization: Bearer *]``
 HTTP/1.1 200 OK
 Content-Type: text/plain
 
 This is a protected resource
-`);
+`;
 
 // Custom error handling
 router.endpoint`GET /error`(() => {
@@ -103,53 +113,77 @@ const errorHandler = (error, request) => {
 serve({ port: 8080 }, router, { errorHandler });
 ```
 
-## API Reference
+## 📘 API Reference
 
 ### `createLouteRouter(options?: LouteRouterInit): LouteRouter`
 
 Creates a new router instance.
 
+#### Options:
+
+- `baseUrl`: Base URL for all routes (optional)
+- `defaultHandler`: Default route handler (optional)
+- `errorHandler`: Custom error handler function (optional)
+- `cache`: Caching options (optional)
+
 ### `createLouteRoute(options?: LouteRouteInit): LouteRoute`
 
 Creates a new route handler.
+
+#### Options:
+
+- `headers`: Initial headers for the response (optional)
+- `status`: HTTP status code (optional)
+- `statusText`: HTTP status text (optional)
+- `streaming`: Enable streaming response (optional)
 
 ### `serve(options: { port: number }, handler: LouteRoute | LouteRouter, serverOptions?: object): void`
 
 Starts a server with the given handler.
 
-## Types
+## 📜 Changelog
 
-The library includes TypeScript definitions. Here are some key types:
+All notable changes to this project will be documented in this file.
 
-```typescript
-type LouteRoute = (request: Request) => Response | Promise<Response>;
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-type LouteRouter = LouteRoute & {
-  endpoint: (template: TemplateStringsArray | LouteRoute) => void;
-};
+This project will adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) once it reaches 1.0.0.
 
-type LouteRouteInit = {
-  headers?: HeadersInit | Headers;
-  status?: number;
-  statusText?: string;
-  streaming?: boolean;
-};
+### [0.0.0] - 2024-08-26
 
-type LouteRouterInit = {
-  baseUrl: string;
-  defaultHandler: LouteRoute;
-  errorHandler: (
-    error: Error,
-    request: Request
-  ) => Response | Promise<Response>;
-  cache: CacheOptions;
-};
-```
+#### Added
 
-## Contributing
+- 🎉 Initial release of Loute
+- 🛠 Core routing functionality
+- 🛠 HTTP request and response handling
+- 🛠 TypeScript definitions
+- 🛠 Support for route parameters and query strings
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+## 🤝 Contributing
 
-## License
+We welcome contributions to Loute! Here's how you can help:
 
-This project is licensed under the ISC License.
+1. Fork the repository
+2. Create a new branch: `git checkout -b feature/your-feature-name`
+3. Make your changes and commit them: `git commit -m 'Add some feature'`
+4. Push to the branch: `git push origin feature/your-feature-name`
+5. Submit a pull request
+
+Please make sure to update tests as appropriate and adhere to the existing coding style.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgements
+
+- Thanks to all contributors who have helped shape Loute
+- Inspired by modern web development practices and the need for flexible routing solutions
+
+## 📬 Contact
+
+For questions, suggestions, or issues, please open an issue on the GitHub repository or contact the maintainers directly.
+
+---
+
+Happy routing with Loute! 🚀
