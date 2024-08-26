@@ -143,10 +143,10 @@ Content-Type: text/html
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Phroute Demo</title>
+    <title>LeRoute Demo</title>
   </head>
   <body>
-    <h1>Welcome to Phroute!</h1>
+    <h1>Welcome to LeRoute!</h1>
     <p>The current time is: </p>
     <p>Your user agent is: </p>
   </body>

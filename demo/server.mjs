@@ -1,46 +1,20 @@
 import serve from "serve-cold";
 import { createLeRoute, createLeRouter } from "../index.mjs";
 
-const echoRoute = async (request) => {
-  const { method, url, headers } = request;
-  const body = await request.text();
-  console.log(`${method} ${url}`);
-  console.log([...headers]);
-  console.log(body);
-  return new Response(body, {
-    status: 200,
-    headers: {
-      "content-type": headers.get("content-type") || "text/plain",
-    },
-  });
-};
-serve({ port: 8078 }, echoRoute);
-
-const echoPhroute = createLeRoute({ streaming: true })`HTTP/1.1 200 OK
-Content-Type: ${(request) =>
-  request.headers.get("content-type") || "text/plain"}
-
-${async (request) => {
-  const body = await request.text();
-  console.log(body);
-  return body;
-}}`;
-serve({ port: 8079 }, echoPhroute);
-
-// Server with single html "phroute"
+// Server with single html route
 const htmlRoute = createLeRoute({ streaming: true })`<!DOCTYPE html>
 <html>
   <head>
-    <title>Phroute Demo</title>
+    <title>LeRoute Demo</title>
   </head>
   <body>
-    <h1>Welcome to Phroute!</h1>
+    <h1>Welcome to LeRoute!</h1>
     <p>The current time is: ${() => new Date().toISOString()}</p>
     <p>Your user agent is: ${(request) => request.headers.get("User-Agent")}</p>
   </body>
 </html>`;
 serve({ port: 8080 }, htmlRoute);
-// Server with single "phrote"
+// Server with single non-html route
 const customRoute = createLeRoute({ streaming: true })`HTTP/1.1 200 OK
 Content-Type: text/markdown
 
@@ -54,7 +28,7 @@ This custom response has it's content type set to 'text/markdown'.
 `;
 serve({ port: 8081 }, customRoute);
 
-// Serverver with multiple "phroutes" using "Phrouter" with multiple
+// Server with multiple routes using router
 const router = createLeRouter();
 router.endpoint`GET /`(htmlRoute);
 router.endpoint`GET /about`(customRoute);
