@@ -1,27 +1,19 @@
-type CreateRouteSignature = (
-  init: LouteRouteInit
-) => (template: TemplateStringsArray) => LouteRoute;
-
-type CreateRouterSignature = (init: LouteRouterInit) => LouteRouter;
-
-////
-
 // Represents a route handler function
-type LouteRoute = (
+export type LouteRoute = (
   request: Request,
   context?: Record<string, any>
 ) => Response | Promise<Response>;
 
 // Extension for the LouteRouter to add endpoints
-type LouteRouterExtension = {
-  endpoint: (template: TemplateStringsArray | LouteRoute) => void;
+export type LouteRouterExtension = {
+  endpoint: (template: TemplateStringsArray, ...substitutions: any[]) => LouteRouter;
 };
 
 // Combines LouteRoute and LouteRouterExtension
-type LouteRouter = LouteRoute & LouteRouterExtension;
+export type LouteRouter = LouteRoute & LouteRouterExtension;
 
 // Configuration options for a LouteRoute
-type LouteRouteInit = {
+export type LouteRouteInit = {
   headers?: HeadersInit | Headers;
   status?: number;
   statusText?: string;
@@ -29,36 +21,37 @@ type LouteRouteInit = {
 };
 
 // Middleware for LouteRoute
-type LouteRouteMiddleware = LouteRouteInit | ((request: Request) => LouteRouteInit);
+export type LouteRouteMiddleware = LouteRouteInit | ((request: Request) => LouteRouteInit);
 
 // Function to create a LouteRoute
-type CreateRoute = (
+export type CreateLouteRoute = (
   init?: LouteRouteMiddleware
 ) => (template: TemplateStringsArray, ...substitutions: any[]) => LouteRoute;
 
 // Configuration options for a LouteRouter
-type LouteRouterInit = {
-  baseUrl: string;
-  defaultHandler: LouteRoute;
-  errorHandler: (
+export type LouteRouterInit = {
+  baseUrl?: string;
+  defaultHandler?: LouteRoute;
+  errorHandler?: (
     error: Error,
     request: Request
   ) => Response | Promise<Response>;
-  cache: CacheOptions;
+  cache?: CacheOptions;
 };
 
 // Middleware for LouteRouter
-type LouteRouterMiddleware = LouteRouterInit | ((request: Request) => LouteRouterInit);
+export type LouteRouterMiddleware = LouteRouterInit | ((request: Request) => LouteRouterInit);
 
 // Function to create a LouteRouter
-type CreateRouter = (init?: LouteRouterMiddleware) => LouteRouter;
+export type CreateLouteRouter = (init?: LouteRouterMiddleware) => LouteRouter;
 
-////////
-
-// Existing types...
+// Cache options
+export type CacheOptions = {
+  // Add cache-related options here
+};
 
 // InlineParam options
-type InlineParamOptions = {
+export type InlineParamOptions = {
   name: string;
   optional?: boolean;
   type?: "string" | "number" | "boolean";
@@ -71,7 +64,7 @@ type InlineParamOptions = {
 };
 
 // HeaderMatch options
-type HeaderMatchOptions = {
+export type HeaderMatchOptions = {
   name: string;
   value?: string;
   operator?: "=" | "^=" | "$=" | "~=" | "*=" | ">" | "<" | ">=" | "<=";
@@ -81,5 +74,5 @@ type HeaderMatchOptions = {
   rangeInclusive?: [boolean, boolean];
 };
 
-type InlineParam = (options: InlineParamOptions) => string;
-type HeaderMatch = (options: HeaderMatchOptions) => string;
+export type InlineParam = (options: InlineParamOptions) => string;
+export type HeaderMatch = (options: HeaderMatchOptions) => string;
