@@ -1,6 +1,13 @@
 # Loute
 
-Loute is a flexible and powerful routing library for handling HTTP requests and responses in JavaScript. It provides an intuitive API for creating routes, handling requests, and generating responses.
+[![npm version](https://badge.fury.io/js/loute.svg)](https://badge.fury.io/js/loute)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+<img alt="" width="512" height="512" src="./logo.jpeg" style="width:512px;height:512px"/>
+
+Loute is a flexible and powerful routing library for handling HTTP requests and responses in JavaScript.
+
+It uses tagged-template-strings to provides an intuitive API for creating routes, handling requests, and generating requests and responses.
 
 ## Features
 
@@ -22,7 +29,7 @@ npm install loute
 ### Basic Usage
 
 ```javascript
-import { createLouteRouter, createLouteRoute } from 'loute';
+import { createLouteRouter, createLouteRoute } from "loute";
 
 // Create a router
 const router = createLouteRouter();
@@ -53,22 +60,25 @@ router.endpoint`GET /user/:id`(createLouteRoute()`
 `);
 
 // Use the router
-import { serve } from 'loute';
+import { serve } from "loute";
 serve({ port: 8080 }, router);
 ```
 
 ### Advanced Usage
 
 ```javascript
-import { createLouteRouter, createLouteRoute } from 'loute';
+import { createLouteRouter, createLouteRoute } from "loute";
 
 const router = createLouteRouter();
 
 // JSON response
 router.endpoint`GET /api/data`(async (request) => {
-  const data = { message: "Hello, World!", timestamp: new Date().toISOString() };
+  const data = {
+    message: "Hello, World!",
+    timestamp: new Date().toISOString(),
+  };
   return new Response(JSON.stringify(data), {
-    headers: { 'Content-Type': 'application/json' }
+    headers: { "Content-Type": "application/json" },
   });
 });
 
@@ -128,7 +138,10 @@ type LouteRouteInit = {
 type LouteRouterInit = {
   baseUrl: string;
   defaultHandler: LouteRoute;
-  errorHandler: (error: Error, request: Request) => Response | Promise<Response>;
+  errorHandler: (
+    error: Error,
+    request: Request
+  ) => Response | Promise<Response>;
   cache: CacheOptions;
 };
 ```
