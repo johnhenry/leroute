@@ -1,8 +1,12 @@
 {
-  "name": "phrouter",
-  "version": "1.0.0",
+  "name": "loute",
+  "version": "0.0.0",
   "description": "",
   "main": "index.mjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johnhenry/loute"
+  },
   "directories": {
     "test": "test"
   },
@@ -13,5 +17,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "serve-cold": "^0.0.0"
+  }
 }

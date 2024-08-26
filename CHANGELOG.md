@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Initial project setup
 - Core routing functionality
 - Request and response handling utilities
@@ -23,9 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
-## [1.0.0] - 2023-06-11
+## [0.0.0] - 2023-06-11
 
 ### Added
+
 - Initial release of Phrouter
 - Basic routing functionality
 - HTTP request and response handling

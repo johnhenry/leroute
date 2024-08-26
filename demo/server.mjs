@@ -1,4 +1,4 @@
-import serve from "../utility/node-serve.mjs";
+import serve from "serve-cold";
 import { createPhroute } from "../create-phroute.mjs";
 import { createPhrouter } from "../create-phrouter.mjs";
 

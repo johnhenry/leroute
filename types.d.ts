@@ -7,7 +7,10 @@ type CreateRouterSignature = (init: PhrouterInit) => Phrouter;
 ////
 
 // Represents a route handler function
-type Phoute = (request: Request) => Response | Promise<Response>;
+type Phoute = (
+  request: Request,
+  context?: Record<string, any>
+) => Response | Promise<Response>;
 
 // Extension for the Phrouter to add endpoints
 type PhrouterExtension = {
