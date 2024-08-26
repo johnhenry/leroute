@@ -1,6 +1,6 @@
-import { createPhroute } from "./create-phroute.mjs";
+import { createLouteRoute } from "./create-louteroute.mjs";
 
 export const createResponse = (strings, ...substitutions) =>
-  createPhroute()(strings, ...substitutions)();
+  createLouteRoute()(strings, ...substitutions)();
 
 export default createResponse;

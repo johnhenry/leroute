@@ -1,7 +1,7 @@
-import { createPhroute } from "./create-phroute.mjs";
+import { createLouteRoute } from "./create-louteroute.mjs";
 import { HTTPExpression } from "./utility/http-expression.mjs";
 /** @type {CreateRouter} */
-export const createPhrouter = (initial = {}) => {
+export const createLouteRouter = (initial = {}) => {
   const routes = [];
   const {
     defaultHandler = (request) =>
@@ -40,7 +40,7 @@ export const createPhrouter = (initial = {}) => {
         typeof values === "function"
           ? values
           : (request, init) =>
-              createPhroute(init)(values, ...substitutions)(request, init);
+              createLouteRoute(init)(values, ...substitutions)(request, init);
       routes.push([matcher, handler]);
       return router;
     };

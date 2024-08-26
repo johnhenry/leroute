@@ -1,18 +1,18 @@
-# Phrouter API Documentation
+# Loute API Documentation
 
 ## Table of Contents
 
-1. [createPhrouter](#createphrouter)
-2. [createPhroute](#createphroute)
+1. [createLouteRouter](#createLouteRouter)
+2. [createLouteRoute](#createLouteRoute)
 3. [serve](#serve)
 4. [Utility Functions](#utility-functions)
 
-## createPhrouter
+## createLouteRouter
 
 Creates a new router instance.
 
 ```typescript
-function createPhrouter(init?: PhrouterInit): Phrouter
+function createLouteRouter(init?: LouteRouterInit): LouteRouter
 ```
 
 ### Parameters
@@ -20,9 +20,9 @@ function createPhrouter(init?: PhrouterInit): Phrouter
 - `init` (optional): Configuration options for the router
 
   ```typescript
-  type PhrouterInit = {
+  type LouteRouterInit = {
     baseUrl?: string;
-    defaultHandler?: Phroute;
+    defaultHandler?: LouteRoute;
     errorHandler?: (error: Error, request: Request) => Response | Promise<Response>;
     cache?: CacheOptions;
   }
@@ -30,14 +30,14 @@ function createPhrouter(init?: PhrouterInit): Phrouter
 
 ### Returns
 
-Returns a `Phrouter` instance, which is a function that can be used as a request handler and also has an `endpoint` method for defining routes.
+Returns a `LouteRouter` instance, which is a function that can be used as a request handler and also has an `endpoint` method for defining routes.
 
 ### Example
 
 ```javascript
-import { createPhrouter } from 'phrouter';
+import { createLouteRouter } from 'loute';
 
-const router = createPhrouter({
+const router = createLouteRouter({
   baseUrl: 'https://api.example.com',
   errorHandler: (error, request) => {
     console.error('Error:', error);
@@ -50,12 +50,12 @@ router.endpoint`GET /users/:id`(async (request, { params }) => {
 });
 ```
 
-## createPhroute
+## createLouteRoute
 
 Creates a new route handler.
 
 ```typescript
-function createPhroute(init?: PhrouteInit): (template: TemplateStringsArray, ...substitutions: any[]) => Phroute
+function createLouteRoute(init?: LouteRouteInit): (template: TemplateStringsArray, ...substitutions: any[]) => LouteRoute
 ```
 
 ### Parameters
@@ -63,7 +63,7 @@ function createPhroute(init?: PhrouteInit): (template: TemplateStringsArray, ...
 - `init` (optional): Configuration options for the route
 
   ```typescript
-  type PhrouteInit = {
+  type LouteRouteInit = {
     headers?: HeadersInit | Headers;
     status?: number;
     statusText?: string;
@@ -73,14 +73,14 @@ function createPhroute(init?: PhrouteInit): (template: TemplateStringsArray, ...
 
 ### Returns
 
-Returns a function that takes a template literal and returns a `Phroute` (a request handler function).
+Returns a function that takes a template literal and returns a `LouteRoute` (a request handler function).
 
 ### Example
 
 ```javascript
-import { createPhroute } from 'phrouter';
+import { createLouteRoute } from 'loute';
 
-const userRoute = createPhroute({ streaming: true })`
+const userRoute = createLouteRoute({ streaming: true })`
 HTTP/1.1 200 OK
 Content-Type: application/json
 
@@ -97,21 +97,21 @@ Content-Type: application/json
 Starts a server with the given handler.
 
 ```typescript
-function serve(options: { port: number }, handler: Phroute | Phrouter, serverOptions?: object): void
+function serve(options: { port: number }, handler: LouteRoute | LouteRouter, serverOptions?: object): void
 ```
 
 ### Parameters
 
 - `options`: An object with a `port` property specifying the port to listen on
-- `handler`: A `Phroute` or `Phrouter` to handle incoming requests
+- `handler`: A `LouteRoute` or `LouteRouter` to handle incoming requests
 - `serverOptions` (optional): Additional options for the server
 
 ### Example
 
 ```javascript
-import { serve, createPhrouter } from 'phrouter';
+import { serve, createLouteRouter } from 'loute';
 
-const router = createPhrouter();
+const router = createLouteRouter();
 // Define routes...
 
 serve({ port: 8080 }, router);
@@ -119,14 +119,14 @@ serve({ port: 8080 }, router);
 
 ## Utility Functions
 
-Phrouter provides several utility functions to help with request and response handling:
+Loute provides several utility functions to help with request and response handling:
 
 ### tagRequest
 
 Creates a new `Request` object from a template literal.
 
 ```javascript
-import { tagRequest } from 'phrouter';
+import { tagRequest } from 'loute';
 
 const request = await tagRequest()`
 GET /api/users HTTP/1.1
@@ -139,7 +139,7 @@ Accept: application/json
 Creates a new `Response` object from a template literal.
 
 ```javascript
-import { createResponse } from 'phrouter';
+import { createResponse } from 'loute';
 
 const response = await createResponse`
 HTTP/1.1 200 OK
@@ -154,7 +154,7 @@ Content-Type: application/json
 A utility for parsing and manipulating HTTP messages.
 
 ```javascript
-import { HTTPExpression } from 'phrouter';
+import { HTTPExpression } from 'loute';
 
 const expr = new HTTPExpression('GET /users/:id HTTP/1.1');
 console.log(expr.method); // 'GET'
@@ -167,7 +167,7 @@ console.log(expr.version); // 'HTTP/1.1'
 A utility function for deconstructing HTTP messages.
 
 ```javascript
-import { deconstruct } from 'phrouter';
+import { deconstruct } from 'loute';
 
 const { method, url, headers, body } = deconstruct`
 POST /api/users HTTP/1.1
@@ -182,7 +182,7 @@ Content-Type: application/json
 A utility function for processing HTTP messages.
 
 ```javascript
-import { cook } from 'phrouter';
+import { cook } from 'loute';
 
 const processedMessage = cook`
 GET /api/users/:id HTTP/1.1
@@ -190,4 +190,4 @@ Accept: application/json
 `({ id: 123 });
 ```
 
-This API documentation provides an overview of the main functions and utilities provided by the Phrouter library. For more detailed information on specific use cases and advanced features, please refer to the README.md and the source code.
+This API documentation provides an overview of the main functions and utilities provided by the Loute library. For more detailed information on specific use cases and advanced features, please refer to the README.md and the source code.

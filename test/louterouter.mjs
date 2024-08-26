@@ -1,4 +1,4 @@
-import { createPhrouter } from "../create-phrouter.mjs";
+import { createLouteRouter } from "../create-louterouter.mjs";
 import HTTPExpression, {
   InlineParameter,
   HeaderMatch,
@@ -7,8 +7,8 @@ import HTTPExpression, {
 import { describe, it, test } from "node:test";
 import assert from "node:assert";
 
-test("Phrouter - Basic routing", async () => {
-  const router = createPhrouter();
+test("LouteRouter - Basic routing", async () => {
+  const router = createLouteRouter();
   router.endpoint`GET /``Hello, World!`;
   const request = new Request("http://example.com/");
   const response = await router(request);
@@ -16,8 +16,8 @@ test("Phrouter - Basic routing", async () => {
   assert.equal(response.status, 200);
 });
 
-test("Phrouter - URL parameters", async () => {
-  const router = createPhrouter();
+test("LouteRouter - URL parameters", async () => {
+  const router = createLouteRouter();
   router.endpoint`GET /user/:id``User ID: ${(_, { params }) => params.id}`;
 
   const request = new Request("http://example.com/user/123");
@@ -25,8 +25,8 @@ test("Phrouter - URL parameters", async () => {
   assert.equal(await response.text(), "User ID: 123");
 });
 
-test("Phrouter - 404 for unmatched routes", async () => {
-  const router = createPhrouter();
+test("LouteRouter - 404 for unmatched routes", async () => {
+  const router = createLouteRouter();
   router.endpoint`GET /``Hello, World!`;
 
   const request = new Request("http://example.com/not-found");
@@ -34,8 +34,8 @@ test("Phrouter - 404 for unmatched routes", async () => {
   assert.equal(response.status, 404);
 });
 
-test("Phrouter - Custom error handler", async () => {
-  const router = createPhrouter({
+test("LouteRouter - Custom error handler", async () => {
+  const router = createLouteRouter({
     errorHandler: (error, request) =>
       new Response(`Custom Error: ${error.message}`, { status: 500 }),
   });
@@ -49,8 +49,8 @@ test("Phrouter - Custom error handler", async () => {
   assert.equal(await response.text(), "Custom Error: Test Error");
 });
 
-test("Phrouter - Multiple routes", async () => {
-  const router = createPhrouter();
+test("LouteRouter - Multiple routes", async () => {
+  const router = createLouteRouter();
   router.endpoint`GET /``Home`;
   router.endpoint`GET /about``About`;
   router.endpoint`GET /contact``Contact`;
@@ -66,8 +66,8 @@ test("Phrouter - Multiple routes", async () => {
   }
 });
 
-test("Phrouter - Method matching", async () => {
-  const router = createPhrouter();
+test("LouteRouter - Method matching", async () => {
+  const router = createLouteRouter();
   router.endpoint`GET /api``GET API`;
   router.endpoint`POST /api``POST API`;
 
@@ -81,8 +81,8 @@ test("Phrouter - Method matching", async () => {
   assert.equal(await postResponse.text(), "POST API");
 });
 
-test("Phrouter - Nested routes", async () => {
-  const router = createPhrouter();
+test("LouteRouter - Nested routes", async () => {
+  const router = createLouteRouter();
   router.endpoint`GET /api/v1/users``API v1 Users`;
   router.endpoint`GET /api/v2/users``API v2 Users`;
 
@@ -96,8 +96,8 @@ test("Phrouter - Nested routes", async () => {
   assert.equal(await v2Response.text(), "API v2 Users");
 });
 
-test("Phrouter - Function handler", async () => {
-  const router = createPhrouter();
+test("LouteRouter - Function handler", async () => {
+  const router = createLouteRouter();
   router.endpoint`GET /function`((request) => {
     return new Response("Function handler", { status: 200 });
   });
@@ -109,42 +109,43 @@ test("Phrouter - Function handler", async () => {
   assert.equal(response.status, 200);
 });
 
-// restore above
+// Commented out tests
+/*
+test("LouteRouter - InlineParam", async () => {
+  const router = createLouteRouter();
+  const id = InlineParam({
+    name: "id",
+    type: "number",
+    min: 1,
+    max: 1000,
+  });
+  router.endpoint`GET /user/${id}``User ID: ${(_, { params }) => params.id}`;
 
-// test("Phrouter - InlineParam", async () => {
-//   const router = createPhrouter();
-//   const id = InlineParam({
-//     name: "id",
-//     type: "number",
-//     min: 1,
-//     max: 1000,
-//   });
-//   router.endpoint`GET /user/${id}``User ID: ${(_, { params }) => params.id}`;
+  const request = new Request("http://example.com/user/123");
+  const response = await router(request);
+  assert.equal(await response.text(), "User ID: 123");
+});
 
-//   const request = new Request("http://example.com/user/123");
-//   const response = await router(request);
-//   assert.equal(await response.text(), "User ID: 123");
-// });
+test("LouteRouter - HeaderMatch", async () => {
+  const router = createLouteRouter();
+  const jsonHeader = HeaderMatch({
+    name: "Content-Type",
+    value: "application/json",
+  });
+  router.endpoint`POST /api ${jsonHeader}`(async (request) => {
+    const data = await request.json();
+    return new Response(JSON.stringify({ received: data }), {
+      headers: { "Content-Type": "application/json" },
+    });
+  });
 
-// test("Phrouter - HeaderMatch", async () => {
-//   const router = createPhrouter();
-//   const jsonHeader = HeaderMatch({
-//     name: "Content-Type",
-//     value: "application/json",
-//   });
-//   router.endpoint`POST /api ${jsonHeader}`(async (request) => {
-//     const data = await request.json();
-//     return new Response(JSON.stringify({ received: data }), {
-//       headers: { "Content-Type": "application/json" },
-//     });
-//   });
-
-//   const request = new Request("http://example.com/api", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({ test: "data" }),
-//   });
-//   const response = await router(request);
-//   assert.equal(response.headers.get("Content-Type"), "application/json");
-//   assert.equal(await response.json(), { received: { test: "data" } });
-// });
+  const request = new Request("http://example.com/api", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ test: "data" }),
+  });
+  const response = await router(request);
+  assert.equal(response.headers.get("Content-Type"), "application/json");
+  assert.equal(await response.json(), { received: { test: "data" } });
+});
+*/

@@ -1,6 +1,6 @@
-# Contributing to Phrouter
+# Contributing to Loute
 
-We welcome contributions to the Phrouter project! This document provides guidelines for contributing to the project.
+We welcome contributions to the Loute project! This document provides guidelines for contributing to the project.
 
 ## Code of Conduct
 
@@ -49,6 +49,6 @@ By participating in this project, you are expected to uphold our Code of Conduct
 
 ## License
 
-By contributing to Phrouter, you agree that your contributions will be licensed under the ISC License.
+By contributing to Loute, you agree that your contributions will be licensed under the ISC License.
 
-Thank you for contributing to Phrouter!
+Thank you for contributing to Loute!

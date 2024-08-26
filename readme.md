@@ -1,6 +1,6 @@
-# Phrouter
+# Loute
 
-Phrouter is a flexible and powerful routing library for handling HTTP requests and responses in JavaScript. It provides an intuitive API for creating routes, handling requests, and generating responses.
+Loute is a flexible and powerful routing library for handling HTTP requests and responses in JavaScript. It provides an intuitive API for creating routes, handling requests, and generating responses.
 
 ## Features
 
@@ -14,7 +14,7 @@ Phrouter is a flexible and powerful routing library for handling HTTP requests a
 ## Installation
 
 ```bash
-npm install phrouter
+npm install loute
 ```
 
 ## Usage
@@ -22,27 +22,27 @@ npm install phrouter
 ### Basic Usage
 
 ```javascript
-import { createPhrouter, createPhroute } from 'phrouter';
+import { createLouteRouter, createLouteRoute } from 'loute';
 
 // Create a router
-const router = createPhrouter();
+const router = createLouteRouter();
 
 // Define a simple route
-router.endpoint`GET /`(createPhroute()`
+router.endpoint`GET /`(createLouteRoute()`
 <!DOCTYPE html>
 <html>
   <head>
     <title>Welcome</title>
   </head>
   <body>
-    <h1>Welcome to Phrouter!</h1>
+    <h1>Welcome to Loute!</h1>
     <p>The current time is: ${() => new Date().toISOString()}</p>
   </body>
 </html>
 `);
 
 // Define a route with parameters
-router.endpoint`GET /user/:id`(createPhroute()`
+router.endpoint`GET /user/:id`(createLouteRoute()`
 <!DOCTYPE html>
 <html>
   <body>
@@ -53,16 +53,16 @@ router.endpoint`GET /user/:id`(createPhroute()`
 `);
 
 // Use the router
-import { serve } from 'phrouter';
+import { serve } from 'loute';
 serve({ port: 8080 }, router);
 ```
 
 ### Advanced Usage
 
 ```javascript
-import { createPhrouter, createPhroute } from 'phrouter';
+import { createLouteRouter, createLouteRoute } from 'loute';
 
-const router = createPhrouter();
+const router = createLouteRouter();
 
 // JSON response
 router.endpoint`GET /api/data`(async (request) => {
@@ -73,7 +73,7 @@ router.endpoint`GET /api/data`(async (request) => {
 });
 
 // Route with header matching
-router.endpoint`GET /protected [Authorization: Bearer *]`(createPhroute()`
+router.endpoint`GET /protected [Authorization: Bearer *]`(createLouteRoute()`
 HTTP/1.1 200 OK
 Content-Type: text/plain
 
@@ -95,15 +95,15 @@ serve({ port: 8080 }, router, { errorHandler });
 
 ## API Reference
 
-### `createPhrouter(options?: PhrouterInit): Phrouter`
+### `createLouteRouter(options?: LouteRouterInit): LouteRouter`
 
 Creates a new router instance.
 
-### `createPhroute(options?: PhrouteInit): Phroute`
+### `createLouteRoute(options?: LouteRouteInit): LouteRoute`
 
 Creates a new route handler.
 
-### `serve(options: { port: number }, handler: Phroute | Phrouter, serverOptions?: object): void`
+### `serve(options: { port: number }, handler: LouteRoute | LouteRouter, serverOptions?: object): void`
 
 Starts a server with the given handler.
 
@@ -112,22 +112,22 @@ Starts a server with the given handler.
 The library includes TypeScript definitions. Here are some key types:
 
 ```typescript
-type Phroute = (request: Request) => Response | Promise<Response>;
+type LouteRoute = (request: Request) => Response | Promise<Response>;
 
-type Phrouter = Phroute & {
-  endpoint: (template: TemplateStringsArray | Phroute) => void;
+type LouteRouter = LouteRoute & {
+  endpoint: (template: TemplateStringsArray | LouteRoute) => void;
 };
 
-type PhrouteInit = {
+type LouteRouteInit = {
   headers?: HeadersInit | Headers;
   status?: number;
   statusText?: string;
   streaming?: boolean;
 };
 
-type PhrouterInit = {
+type LouteRouterInit = {
   baseUrl: string;
-  defaultHandler: Phroute;
+  defaultHandler: LouteRoute;
   errorHandler: (error: Error, request: Request) => Response | Promise<Response>;
   cache: CacheOptions;
 };

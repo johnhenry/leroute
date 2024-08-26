@@ -1,45 +1,45 @@
 type CreateRouteSignature = (
-  init: PhrouteInit
-) => (template: TemplateStringsArray) => Phroute;
+  init: LouteRouteInit
+) => (template: TemplateStringsArray) => LouteRoute;
 
-type CreateRouterSignature = (init: PhrouterInit) => Phrouter;
+type CreateRouterSignature = (init: LouteRouterInit) => LouteRouter;
 
 ////
 
 // Represents a route handler function
-type Phoute = (
+type LouteRoute = (
   request: Request,
   context?: Record<string, any>
 ) => Response | Promise<Response>;
 
-// Extension for the Phrouter to add endpoints
-type PhrouterExtension = {
-  endpoint: (template: TemplateStringsArray | Phroute) => void;
+// Extension for the LouteRouter to add endpoints
+type LouteRouterExtension = {
+  endpoint: (template: TemplateStringsArray | LouteRoute) => void;
 };
 
-// Combines Phoute and PhrouterExtension
-type Phrouter = Phoute & PhrouterExtension;
+// Combines LouteRoute and LouteRouterExtension
+type LouteRouter = LouteRoute & LouteRouterExtension;
 
-// Configuration options for a Phroute
-type PhrouteInit = {
+// Configuration options for a LouteRoute
+type LouteRouteInit = {
   headers?: HeadersInit | Headers;
   status?: number;
   statusText?: string;
   streaming?: boolean;
 };
 
-// Middleware for Phroute
-type PhrouteMiddleware = PhrouteInit | ((request: Request) => PhrouteInit);
+// Middleware for LouteRoute
+type LouteRouteMiddleware = LouteRouteInit | ((request: Request) => LouteRouteInit);
 
-// Function to create a Phroute
+// Function to create a LouteRoute
 type CreateRoute = (
-  init?: PhrouteMiddleware
-) => (template: TemplateStringsArray, ...substitutions: any[]) => Phroute;
+  init?: LouteRouteMiddleware
+) => (template: TemplateStringsArray, ...substitutions: any[]) => LouteRoute;
 
-// Configuration options for a Phrouter
-type PhrouterInit = {
+// Configuration options for a LouteRouter
+type LouteRouterInit = {
   baseUrl: string;
-  defaultHandler: Phroute;
+  defaultHandler: LouteRoute;
   errorHandler: (
     error: Error,
     request: Request
@@ -47,11 +47,11 @@ type PhrouterInit = {
   cache: CacheOptions;
 };
 
-// Middleware for Phrouter
-type PhrouterMiddleware = PhrouterInit | ((request: Request) => PhrouterInit);
+// Middleware for LouteRouter
+type LouteRouterMiddleware = LouteRouterInit | ((request: Request) => LouteRouterInit);
 
-// Function to create a Phrouter
-type CreateRouter = (init?: PhrouterMiddleware) => Phrouter;
+// Function to create a LouteRouter
+type CreateRouter = (init?: LouteRouterMiddleware) => LouteRouter;
 
 ////////
 

@@ -11,13 +11,13 @@ import { pathToFileURL } from "url";
 const ALL = "all";
 
 /**
- * @typedef {import('./types').Phroute} Phroute
+ * @typedef {import('./types').LouteRoute} LouteRoute
  */
 
 /**
  * Creates a filesystem-based router
  * @param {string} baseDir - The base directory for routing
- * @returns {Phroute} A Phroute function
+ * @returns {LouteRoute} A LouteRoute function
  *
  * @description
  * This function creates a router that maps URL paths to a directory structure.
@@ -41,7 +41,7 @@ const ALL = "all";
  * would be available in the request object passed to the handler function.
  *
  * Handler Functions:
- * Each [http method].mjs file should export a default function of type Phroute.
+ * Each [http method].mjs file should export a default function of type LouteRoute.
  * This function will receive the request object, augmented with a 'params' property
  * containing any path parameters.
  *
