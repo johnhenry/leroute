@@ -1,11 +1,13 @@
-# Loute
+# LeRoute
 
-[![npm version](https://badge.fury.io/js/loute.svg)](https://badge.fury.io/js/loute)
+[![npm version](https://badge.fury.io/js/leroute.svg)](https://badge.fury.io/js/leroute)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-<img alt="Loute Logo" width="512" height="512" src="./logo.jpeg" style="width:512px;height:512px"/>
+<img alt="LeRoute Logo" width="512" height="512" src="./logo.jpeg" style="width:512px;height:512px"/>
 
-Loute is a flexible and powerful routing library for handling HTTP requests and responses in JavaScript and TypeScript applications.
+LeRoute is a flexible and powerful routing library for handling HTTP requests and responses in JavaScript and TypeScript applications.
+
+LeRoute works greate with [serve-cold](https://www.npmjs.com/package/serve-cold), a library for serving endpoints.
 
 ## 🚀 Features
 
@@ -19,13 +21,13 @@ Loute is a flexible and powerful routing library for handling HTTP requests and 
 ## 📦 Installation
 
 ```bash
-npm install loute
+npm install leroute
 ```
 
 Or using yarn:
 
 ```bash
-yarn add loute
+yarn add leroute
 ```
 
 ## 🛠 Usage
@@ -33,10 +35,11 @@ yarn add loute
 ### Basic Example
 
 ```javascript
-import { createLouteRouter, createLouteRoute, serve } from "loute";
+import serve from "serve-cold";
+import { createLeRouter, createLeRoute } from "leroute";
 
 // Create a router
-const router = createLouteRouter();
+const router = createLeRouter();
 
 // Define a simple route
 router.endpoint`GET /``
@@ -45,10 +48,10 @@ router.endpoint`GET /``
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Loute</title>
+    <title>Welcome to LeRoute</title>
   </head>
   <body>
-    <h1>Welcome to Loute!</h1>
+    <h1>Welcome to LeRoute!</h1>
     <p>The current time is: ${() => new Date().toISOString()}</p>
   </body>
 </html>
@@ -77,9 +80,9 @@ serve({ port: 8080 }, router);
 ### Advanced Usage
 
 ```javascript
-import { createLouteRouter, createLouteRoute, serve } from "loute";
+import { createLeRouter, createLeRoute, serve } from "leroute";
 
-const router = createLouteRouter();
+const router = createLeRouter();
 
 // JSON API endpoint
 router.endpoint`GET /api/data`(async (request) => {
@@ -115,7 +118,7 @@ serve({ port: 8080 }, router, { errorHandler });
 
 ## 📘 API Reference
 
-### `createLouteRouter(options?: LouteRouterInit): LouteRouter`
+### `createLeRouter(options?: LeRouterInit): LeRouter`
 
 Creates a new router instance.
 
@@ -126,7 +129,7 @@ Creates a new router instance.
 - `errorHandler`: Custom error handler function (optional)
 - `cache`: Caching options (optional)
 
-### `createLouteRoute(options?: LouteRouteInit): LouteRoute`
+### `createLeRoute(options?: LeRouteInit): LeRoute`
 
 Creates a new route handler.
 
@@ -137,7 +140,7 @@ Creates a new route handler.
 - `statusText`: HTTP status text (optional)
 - `streaming`: Enable streaming response (optional)
 
-### `serve(options: { port: number }, handler: LouteRoute | LouteRouter, serverOptions?: object): void`
+### `serve(options: { port: number }, handler: LeRoute | LeRouter, serverOptions?: object): void`
 
 Starts a server with the given handler.
 
@@ -153,7 +156,7 @@ This project will adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Added
 
-- 🎉 Initial release of Loute
+- 🎉 Initial release of LeRoute
 - 🛠 Core routing functionality
 - 🛠 HTTP request and response handling
 - 🛠 TypeScript definitions
@@ -161,7 +164,7 @@ This project will adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 🤝 Contributing
 
-We welcome contributions to Loute! Here's how you can help:
+We welcome contributions to LeRoute! Here's how you can help:
 
 1. Fork the repository
 2. Create a new branch: `git checkout -b feature/your-feature-name`
@@ -177,7 +180,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgements
 
-- Thanks to all contributors who have helped shape Loute
+- Thanks to all contributors who have helped shape LeRoute
 - Inspired by modern web development practices and the need for flexible routing solutions
 
 ## 📬 Contact
@@ -186,4 +189,4 @@ For questions, suggestions, or issues, please open an issue on the GitHub reposi
 
 ---
 
-Happy routing with Loute! 🚀
+Happy routing with LeRoute! 🚀

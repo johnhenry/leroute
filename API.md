@@ -1,18 +1,18 @@
-# Loute API Documentation
+# LeRoute API Documentation
 
 ## Table of Contents
 
-1. [createLouteRouter](#createLouteRouter)
-2. [createLouteRoute](#createLouteRoute)
+1. [createLeRouter](#createLeRouter)
+2. [createLeRoute](#createLeRoute)
 3. [serve](#serve)
 4. [Utility Functions](#utility-functions)
 
-## createLouteRouter
+## createLeRouter
 
 Creates a new router instance.
 
 ```typescript
-function createLouteRouter(init?: LouteRouterInit): LouteRouter
+function createLeRouter(init?: LeRouterInit): LeRouter;
 ```
 
 ### Parameters
@@ -20,29 +20,32 @@ function createLouteRouter(init?: LouteRouterInit): LouteRouter
 - `init` (optional): Configuration options for the router
 
   ```typescript
-  type LouteRouterInit = {
+  type LeRouterInit = {
     baseUrl?: string;
-    defaultHandler?: LouteRoute;
-    errorHandler?: (error: Error, request: Request) => Response | Promise<Response>;
+    defaultHandler?: LeRoute;
+    errorHandler?: (
+      error: Error,
+      request: Request
+    ) => Response | Promise<Response>;
     cache?: CacheOptions;
-  }
+  };
   ```
 
 ### Returns
 
-Returns a `LouteRouter` instance, which is a function that can be used as a request handler and also has an `endpoint` method for defining routes.
+Returns a `LeRouter` instance, which is a function that can be used as a request handler and also has an `endpoint` method for defining routes.
 
 ### Example
 
 ```javascript
-import { createLouteRouter } from 'loute';
+import { createLeRouter } from "leroute";
 
-const router = createLouteRouter({
-  baseUrl: 'https://api.example.com',
+const router = createLeRouter({
+  baseUrl: "https://api.example.com",
   errorHandler: (error, request) => {
-    console.error('Error:', error);
-    return new Response('An error occurred', { status: 500 });
-  }
+    console.error("Error:", error);
+    return new Response("An error occurred", { status: 500 });
+  },
 });
 
 router.endpoint`GET /users/:id`(async (request, { params }) => {
@@ -50,12 +53,14 @@ router.endpoint`GET /users/:id`(async (request, { params }) => {
 });
 ```
 
-## createLouteRoute
+## createLeRoute
 
 Creates a new route handler.
 
 ```typescript
-function createLouteRoute(init?: LouteRouteInit): (template: TemplateStringsArray, ...substitutions: any[]) => LouteRoute
+function createLeRoute(
+  init?: LeRouteInit
+): (template: TemplateStringsArray, ...substitutions: any[]) => LeRoute;
 ```
 
 ### Parameters
@@ -63,24 +68,24 @@ function createLouteRoute(init?: LouteRouteInit): (template: TemplateStringsArra
 - `init` (optional): Configuration options for the route
 
   ```typescript
-  type LouteRouteInit = {
+  type LeRouteInit = {
     headers?: HeadersInit | Headers;
     status?: number;
     statusText?: string;
     streaming?: boolean;
-  }
+  };
   ```
 
 ### Returns
 
-Returns a function that takes a template literal and returns a `LouteRoute` (a request handler function).
+Returns a function that takes a template literal and returns a `LeRoute` (a request handler function).
 
 ### Example
 
 ```javascript
-import { createLouteRoute } from 'loute';
+import { createLeRoute } from "leroute";
 
-const userRoute = createLouteRoute({ streaming: true })`
+const userRoute = createLeRoute({ streaming: true })`
 HTTP/1.1 200 OK
 Content-Type: application/json
 
@@ -97,21 +102,25 @@ Content-Type: application/json
 Starts a server with the given handler.
 
 ```typescript
-function serve(options: { port: number }, handler: LouteRoute | LouteRouter, serverOptions?: object): void
+function serve(
+  options: { port: number },
+  handler: LeRoute | LeRouter,
+  serverOptions?: object
+): void;
 ```
 
 ### Parameters
 
 - `options`: An object with a `port` property specifying the port to listen on
-- `handler`: A `LouteRoute` or `LouteRouter` to handle incoming requests
+- `handler`: A `LeRoute` or `LeRouter` to handle incoming requests
 - `serverOptions` (optional): Additional options for the server
 
 ### Example
 
 ```javascript
-import { serve, createLouteRouter } from 'loute';
+import { serve, createLeRouter } from "leroute";
 
-const router = createLouteRouter();
+const router = createLeRouter();
 // Define routes...
 
 serve({ port: 8080 }, router);
@@ -119,14 +128,14 @@ serve({ port: 8080 }, router);
 
 ## Utility Functions
 
-Loute provides several utility functions to help with request and response handling:
+LeRoute provides several utility functions to help with request and response handling:
 
 ### tagRequest
 
 Creates a new `Request` object from a template literal.
 
 ```javascript
-import { tagRequest } from 'loute';
+import { tagRequest } from "leroute";
 
 const request = await tagRequest()`
 GET /api/users HTTP/1.1
@@ -139,7 +148,7 @@ Accept: application/json
 Creates a new `Response` object from a template literal.
 
 ```javascript
-import { createResponse } from 'loute';
+import { createResponse } from "leroute";
 
 const response = await createResponse`
 HTTP/1.1 200 OK
@@ -154,9 +163,9 @@ Content-Type: application/json
 A utility for parsing and manipulating HTTP messages.
 
 ```javascript
-import { HTTPExpression } from 'loute';
+import { HTTPExpression } from "leroute";
 
-const expr = new HTTPExpression('GET /users/:id HTTP/1.1');
+const expr = new HTTPExpression("GET /users/:id HTTP/1.1");
 console.log(expr.method); // 'GET'
 console.log(expr.path); // '/users/:id'
 console.log(expr.version); // 'HTTP/1.1'
@@ -167,7 +176,7 @@ console.log(expr.version); // 'HTTP/1.1'
 A utility function for deconstructing HTTP messages.
 
 ```javascript
-import { deconstruct } from 'loute';
+import { deconstruct } from "leroute";
 
 const { method, url, headers, body } = deconstruct`
 POST /api/users HTTP/1.1
@@ -182,7 +191,7 @@ Content-Type: application/json
 A utility function for processing HTTP messages.
 
 ```javascript
-import { cook } from 'loute';
+import { cook } from "leroute";
 
 const processedMessage = cook`
 GET /api/users/:id HTTP/1.1
@@ -190,4 +199,4 @@ Accept: application/json
 `({ id: 123 });
 ```
 
-This API documentation provides an overview of the main functions and utilities provided by the Loute library. For more detailed information on specific use cases and advanced features, please refer to the README.md and the source code.
+This API documentation provides an overview of the main functions and utilities provided by the LeRoute library. For more detailed information on specific use cases and advanced features, please refer to the README.md and the source code.

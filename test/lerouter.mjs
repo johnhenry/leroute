@@ -1,4 +1,4 @@
-import { createLouteRouter } from "../create-louterouter.mjs";
+import { createLeRouter } from "../create-lerouter.mjs";
 import HTTPExpression, {
   InlineParameter,
   HeaderMatch,
@@ -7,8 +7,8 @@ import HTTPExpression, {
 import { describe, it, test } from "node:test";
 import assert from "node:assert";
 
-test("LouteRouter - Basic routing", async () => {
-  const router = createLouteRouter();
+test("LeRouter - Basic routing", async () => {
+  const router = createLeRouter();
   router.endpoint`GET /``Hello, World!`;
   const request = new Request("http://example.com/");
   const response = await router(request);
@@ -16,8 +16,8 @@ test("LouteRouter - Basic routing", async () => {
   assert.equal(response.status, 200);
 });
 
-test("LouteRouter - URL parameters", async () => {
-  const router = createLouteRouter();
+test("LeRouter - URL parameters", async () => {
+  const router = createLeRouter();
   router.endpoint`GET /user/:id``User ID: ${(_, { params }) => params.id}`;
 
   const request = new Request("http://example.com/user/123");
@@ -25,8 +25,8 @@ test("LouteRouter - URL parameters", async () => {
   assert.equal(await response.text(), "User ID: 123");
 });
 
-test("LouteRouter - 404 for unmatched routes", async () => {
-  const router = createLouteRouter();
+test("LeRouter - 404 for unmatched routes", async () => {
+  const router = createLeRouter();
   router.endpoint`GET /``Hello, World!`;
 
   const request = new Request("http://example.com/not-found");
@@ -34,8 +34,8 @@ test("LouteRouter - 404 for unmatched routes", async () => {
   assert.equal(response.status, 404);
 });
 
-test("LouteRouter - Custom error handler", async () => {
-  const router = createLouteRouter({
+test("LeRouter - Custom error handler", async () => {
+  const router = createLeRouter({
     errorHandler: (error, request) =>
       new Response(`Custom Error: ${error.message}`, { status: 500 }),
   });
@@ -49,8 +49,8 @@ test("LouteRouter - Custom error handler", async () => {
   assert.equal(await response.text(), "Custom Error: Test Error");
 });
 
-test("LouteRouter - Multiple routes", async () => {
-  const router = createLouteRouter();
+test("LeRouter - Multiple routes", async () => {
+  const router = createLeRouter();
   router.endpoint`GET /``Home`;
   router.endpoint`GET /about``About`;
   router.endpoint`GET /contact``Contact`;
@@ -66,8 +66,8 @@ test("LouteRouter - Multiple routes", async () => {
   }
 });
 
-test("LouteRouter - Method matching", async () => {
-  const router = createLouteRouter();
+test("LeRouter - Method matching", async () => {
+  const router = createLeRouter();
   router.endpoint`GET /api``GET API`;
   router.endpoint`POST /api``POST API`;
 
@@ -81,8 +81,8 @@ test("LouteRouter - Method matching", async () => {
   assert.equal(await postResponse.text(), "POST API");
 });
 
-test("LouteRouter - Nested routes", async () => {
-  const router = createLouteRouter();
+test("LeRouter - Nested routes", async () => {
+  const router = createLeRouter();
   router.endpoint`GET /api/v1/users``API v1 Users`;
   router.endpoint`GET /api/v2/users``API v2 Users`;
 
@@ -96,8 +96,8 @@ test("LouteRouter - Nested routes", async () => {
   assert.equal(await v2Response.text(), "API v2 Users");
 });
 
-test("LouteRouter - Function handler", async () => {
-  const router = createLouteRouter();
+test("LeRouter - Function handler", async () => {
+  const router = createLeRouter();
   router.endpoint`GET /function`((request) => {
     return new Response("Function handler", { status: 200 });
   });
@@ -111,8 +111,8 @@ test("LouteRouter - Function handler", async () => {
 
 // Commented out tests
 /*
-test("LouteRouter - InlineParam", async () => {
-  const router = createLouteRouter();
+test("LeRouter - InlineParam", async () => {
+  const router = createLeRouter();
   const id = InlineParam({
     name: "id",
     type: "number",
@@ -126,8 +126,8 @@ test("LouteRouter - InlineParam", async () => {
   assert.equal(await response.text(), "User ID: 123");
 });
 
-test("LouteRouter - HeaderMatch", async () => {
-  const router = createLouteRouter();
+test("LeRouter - HeaderMatch", async () => {
+  const router = createLeRouter();
   const jsonHeader = HeaderMatch({
     name: "Content-Type",
     value: "application/json",

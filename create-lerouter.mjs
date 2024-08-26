@@ -1,7 +1,7 @@
-import { createLouteRoute } from "./create-louteroute.mjs";
+import { createLeRoute } from "./create-leroute.mjs";
 import { HTTPExpression } from "./utility/http-expression.mjs";
 /** @type {CreateRouter} */
-export const createLouteRouter = (initial = {}) => {
+export const createLeRouter = (initial = {}) => {
   const routes = [];
   const {
     defaultHandler = (request) =>
@@ -40,7 +40,7 @@ export const createLouteRouter = (initial = {}) => {
         typeof values === "function"
           ? values
           : (request, init) =>
-              createLouteRoute(init)(values, ...substitutions)(request, init);
+              createLeRoute(init)(values, ...substitutions)(request, init);
       routes.push([matcher, handler]);
       return router;
     };

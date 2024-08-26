@@ -1,37 +1,42 @@
 // Represents a route handler function
-export type LouteRoute = (
+export type LeRoute = (
   request: Request,
   context?: Record<string, any>
 ) => Response | Promise<Response>;
 
-// Extension for the LouteRouter to add endpoints
-export type LouteRouterExtension = {
-  endpoint: (template: TemplateStringsArray, ...substitutions: any[]) => LouteRouter;
+// Extension for the LeRouter to add endpoints
+export type LeRouterExtension = {
+  endpoint: (
+    template: TemplateStringsArray,
+    ...substitutions: any[]
+  ) => LeRouter;
 };
 
-// Combines LouteRoute and LouteRouterExtension
-export type LouteRouter = LouteRoute & LouteRouterExtension;
+// Combines LeRoute and LeRouterExtension
+export type LeRouter = LeRoute & LeRouterExtension;
 
-// Configuration options for a LouteRoute
-export type LouteRouteInit = {
+// Configuration options for a LeRoute
+export type LeRouteInit = {
   headers?: HeadersInit | Headers;
   status?: number;
   statusText?: string;
   streaming?: boolean;
 };
 
-// Middleware for LouteRoute
-export type LouteRouteMiddleware = LouteRouteInit | ((request: Request) => LouteRouteInit);
+// Middleware for LeRoute
+export type LeRouteMiddleware =
+  | LeRouteInit
+  | ((request: Request) => LeRouteInit);
 
-// Function to create a LouteRoute
-export type CreateLouteRoute = (
-  init?: LouteRouteMiddleware
-) => (template: TemplateStringsArray, ...substitutions: any[]) => LouteRoute;
+// Function to create a LeRoute
+export type CreateLeRoute = (
+  init?: LeRouteMiddleware
+) => (template: TemplateStringsArray, ...substitutions: any[]) => LeRoute;
 
-// Configuration options for a LouteRouter
-export type LouteRouterInit = {
+// Configuration options for a LeRouter
+export type LeRouterInit = {
   baseUrl?: string;
-  defaultHandler?: LouteRoute;
+  defaultHandler?: LeRoute;
   errorHandler?: (
     error: Error,
     request: Request
@@ -39,11 +44,13 @@ export type LouteRouterInit = {
   cache?: CacheOptions;
 };
 
-// Middleware for LouteRouter
-export type LouteRouterMiddleware = LouteRouterInit | ((request: Request) => LouteRouterInit);
+// Middleware for LeRouter
+export type LeRouterMiddleware =
+  | LeRouterInit
+  | ((request: Request) => LeRouterInit);
 
-// Function to create a LouteRouter
-export type CreateLouteRouter = (init?: LouteRouterMiddleware) => LouteRouter;
+// Function to create a LeRouter
+export type CreateLeRouter = (init?: LeRouterMiddleware) => LeRouter;
 
 // Cache options
 export type CacheOptions = {

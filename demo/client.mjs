@@ -1,6 +1,5 @@
 // Import the necessary functions
-import { tagRequest } from "../create-request.mjs";
-import { createResponse } from "../index.mjs";
+import { createResponse, createRequest } from "../index.mjs";
 // Utility function to create a simple readable stream
 const createReadableStream = (data) => {
   return new ReadableStream({
@@ -14,7 +13,7 @@ const createReadableStream = (data) => {
 // Demo 1: Simple GET request
 async function demoSimpleGetRequest() {
   console.log("Demo 1: Simple GET request");
-  const request = await tagRequest()`
+  const request = await createRequest()`
 GET /api/users HTTP/1.1
 Accept: application/json
 `;
@@ -28,7 +27,7 @@ Accept: application/json
 async function demoPostRequestWithJson() {
   console.log("Demo 2: POST request with JSON body");
   const userData = { name: "John Doe", email: "john@example.com" };
-  const request = await tagRequest({ baseUrl: "https://api.example.com" })`
+  const request = await createRequest({ baseUrl: "https://api.example.com" })`
 POST /users HTTP/1.1
 Content-Type: application/json
 
@@ -45,7 +44,7 @@ ${JSON.stringify(userData)}
 async function demoPutRequestWithUrlSearchParams() {
   console.log("Demo 3: PUT request with URLSearchParams");
   const params = new URLSearchParams({ key1: "value1", key2: "value2" });
-  const request = await tagRequest()`
+  const request = await createRequest()`
 PUT https://api.example.com/update HTTP/1.1
 User-Agent: TestAgent/1.0
 
@@ -64,7 +63,7 @@ async function demoPostRequestWithFormData() {
   const formData = new FormData();
   formData.append("username", "testuser");
   formData.append("password", "testpass");
-  const request = await tagRequest({ baseUrl: "https://auth.example.com" })`
+  const request = await createRequest({ baseUrl: "https://auth.example.com" })`
 POST /login HTTP/1.1
 User-Agent: TestAgent/1.0
 
@@ -137,6 +136,27 @@ ${stream}
   console.log("\n");
 }
 
+const demoResponse = async () => {
+  const response = await createResponse`HTTP/1.1 200 OK
+Content-Type: text/html
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Phroute Demo</title>
+  </head>
+  <body>
+    <h1>Welcome to Phroute!</h1>
+    <p>The current time is: </p>
+    <p>Your user agent is: </p>
+  </body>
+</html>`;
+  console.log("Status:", response.status);
+  console.log("Headers:", Object.fromEntries(response.headers));
+  console.log("Body:", await response.text());
+  console.log("\n");
+};
+
 // Run all demos
 async function runAllDemos() {
   await demoSimpleGetRequest();
@@ -147,6 +167,7 @@ async function runAllDemos() {
   await demoJsonResponse();
   await demoCustomStatusResponse();
   await demoReadableStreamResponse();
+  await demoResponse();
 }
 
 runAllDemos().catch(console.error);

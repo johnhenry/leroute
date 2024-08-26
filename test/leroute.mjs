@@ -1,11 +1,11 @@
-import { createLouteRoute } from "../create-louteroute.mjs";
+import { createLeRoute } from "../create-lerouter.mjs";
 
 import { describe, it } from "node:test";
 import assert from "node:assert";
 
-describe("createLouteRoute", () => {
+describe("createLeRoute", () => {
   it("should create a basic route", async () => {
-    const route = createLouteRoute()`Hello, World!`;
+    const route = createLeRoute()`Hello, World!`;
     const response = await route(new Request("https://example.com"));
     assert.strictEqual(await response.text(), "Hello, World!");
     assert.strictEqual(response.status, 200);
@@ -13,13 +13,13 @@ describe("createLouteRoute", () => {
   });
 
   it("should handle function substitutions", async () => {
-    const route = createLouteRoute()`The number is: ${() => 42}`;
+    const route = createLeRoute()`The number is: ${() => 42}`;
     const response = await route(new Request("https://example.com"));
     assert.strictEqual(await response.text(), "The number is: 42");
   });
 
   it("should handle async function substitutions", async () => {
-    const route = createLouteRoute()`The result is: ${async () => {
+    const route = createLeRoute()`The result is: ${async () => {
       await new Promise((resolve) => setTimeout(resolve, 10));
       return "async";
     }}`;
@@ -28,7 +28,7 @@ describe("createLouteRoute", () => {
   });
 
   it("should allow setting custom headers", async () => {
-    const route = createLouteRoute({
+    const route = createLeRoute({
       headers: { "X-Custom-Header": "Test" },
     })`Custom header test`;
     const response = await route(new Request("https://example.com"));
@@ -36,7 +36,7 @@ describe("createLouteRoute", () => {
   });
 
   it("should allow setting custom status", async () => {
-    const route = createLouteRoute({
+    const route = createLeRoute({
       status: 404,
       statusText: "Not Found",
     })`404 Not Found`;
@@ -46,7 +46,7 @@ describe("createLouteRoute", () => {
   });
 
   it("should handle streaming responses", async () => {
-    const route = createLouteRoute({ streaming: true })`
+    const route = createLeRoute({ streaming: true })`
       ${async (_, { response }) => {
         response.headers.set("X-Streaming", "True");
         await new Promise((resolve) => setTimeout(resolve, 10));

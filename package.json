@@ -1,11 +1,11 @@
 {
-  "name": "loute",
+  "name": "leroute",
   "version": "0.0.0",
   "description": "",
   "main": "index.mjs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/johnhenry/loute"
+    "url": "https://github.com/johnhenry/leroute"
   },
   "directories": {
     "test": "test"

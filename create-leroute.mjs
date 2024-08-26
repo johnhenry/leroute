@@ -1,6 +1,6 @@
 const DEFAULT_REQUEST = () => new Request("http://.");
 
-export const createLouteRoute = (initOrMiddleware) => {
+export const createLeRoute = (initOrMiddleware) => {
   const getInit =
     typeof initOrMiddleware === "function"
       ? initOrMiddleware
@@ -165,4 +165,4 @@ export const createLouteRoute = (initOrMiddleware) => {
   };
 };
 
-export default createLouteRoute;
+export default createLeRoute;
